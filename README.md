@@ -18,6 +18,7 @@ API RESTful desenvolvida com **Node.js**, **Express** e **TypeScript**, que perm
 - TypeScript
 - Jest (testes automatizados)
 - Docker
+- fs/promises (para gerenciamento de arquivos JSON)
 
 ## Como rodar localmente com Docker
 
