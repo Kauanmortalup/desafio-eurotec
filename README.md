@@ -28,9 +28,9 @@ git clone https://github.com/Kauanmortalup/Desafio-Eurotec.git
 
 2. Build e execute o container Docker:
 
-- docker build -t desafio-eurotec .
-- docker run --rm desafio-eurotec npm test           (RODAS OS TESTES)
-- docker run -p 3000:3000 desafio-eurotec
+- make build 
+- make test   
+- make run 
 
 
 3.  A aplicação estará disponível em:
