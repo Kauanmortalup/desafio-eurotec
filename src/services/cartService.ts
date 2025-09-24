@@ -87,7 +87,7 @@ export class ShoppingCart {
         return this.items.map(p => ({
             id: p.product.id,
             name: p.product.name,
-            category: p.product.category,
+            category: p.product.category.name,
             price: p.product.price,
             quantity: p.quantity
         }));

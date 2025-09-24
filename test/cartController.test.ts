@@ -41,36 +41,36 @@ describe("CartController", () => {
         jest.clearAllMocks();
     });
 
-    it("Deve adicionar produto", async () => {
+    it("Should add a product", async () => {
         const res = await request(app).post("/items").send({
-        name: "Pneu A",
+        name: "Tire A",
         price: 500,
         quantity: 2,
-        category: "Veiculo",
+        category: "Vehicle",
         });
 
         expect(res.status).toBe(201);
-        expect(res.body.cart[0].name).toBe("Pneu A");
+        expect(res.body.cart[0].name).toBe("Tire A");
     });
 
-    it("Deve listar produtos", async () => {
+    it("Should list products", async () => {
         await request(app).post("/items").send({
-        name: "Pneu B",
+        name: "Tire B",
         price: 300,
         quantity: 1,
-        category: "Veiculo",
+        category: "Vehicle",
         });
 
         const res = await request(app).get("/items");
         expect(res.status).toBe(200);
     });
 
-    it("Deve remover produto existente", async () => {
+    it("Should remove an existing product", async () => {
         const add = await request(app).post("/items").send({
-        name: "Pneu C",
+        name: "Tire C",
         price: 200,
         quantity: 1,
-        category: "Veiculo",
+        category: "Vehicle",
         });
 
         const id = add.body.cart[0].id;
@@ -78,17 +78,17 @@ describe("CartController", () => {
         expect(res.status).toBe(200);
     });
 
-    it("Deve retornar 404 ao remover produto inexistente", async () => {
+    it("Should return 404 when removing a non-existent product", async () => {
         const res = await request(app).delete("/items/12345");
         expect(res.status).toBe(404);
     });
 
-    it("Deve calcular total com frete grátis e descontos", async () => {
+    it("Should calculate total with free shipping and discounts", async () => {
         await request(app).post("/items").send({
-        name: "Pneu D",
+        name: "Tire D",
         price: 1000,
         quantity: 2,
-        category: "Veiculo",
+        category: "Vehicle",
         });
 
         const res = await request(app).get("/total?coupon=10%OFF");
@@ -101,12 +101,12 @@ describe("CartController", () => {
         expect(res.body.total).toBe(2000 + 0 - 200 - 200 - 26);
     });
 
-    it("Deve atualizar quantidade", async () => {
+    it("Should update quantity", async () => {
         const add = await request(app).post("/items").send({
-        name: "Pneu A",
+        name: "Tire A",
         price: 500,
         quantity: 2,
-        category: "Veiculo",
+        category: "Vehicle",
         });
 
         const id = add.body.cart[0].id;

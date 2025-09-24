@@ -15,6 +15,7 @@ jest.mock("../src/services/cartStorageService", () => ({
 
 import { ShoppingCart } from "../src/services/cartService";
 import { Product } from "../src/models/product";
+import { Category } from "../src/models/category";
 
 describe("ShoppingCart", () => {
   let cart: ShoppingCart;
@@ -24,8 +25,10 @@ describe("ShoppingCart", () => {
     jest.clearAllMocks();
   });
 
-    it("Deve localiza produto por ID", async () => {
-        const product = new Product("Pneu A", 500, "Veiculo");
+    it("Should find a product by ID", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire A", 500, category);
+
 
         await cart.addProduct(product, 2);
 
@@ -33,20 +36,22 @@ describe("ShoppingCart", () => {
         expect(productID?.id).toBe(product.id);
     });
 
-    it("Deve adicionar um produto no carrinho", async () => {
-        const product = new Product("Pneu A", 500, "Veiculo");
+    it("Should add a product to the cart", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire A", 500, category);
 
         await cart.addProduct(product, 2);
 
         const items = cart.listProducts();
-        expect(items[0].name).toBe("Pneu A");
-        expect(items[0].category).toBe("Veiculo");
+        expect(items[0].name).toBe("Tire A");
+        expect(items[0].category).toBe("Vehicle");
         expect(items[0].price).toBe(500);
         expect(items[0].quantity).toBe(2);
     });
 
-    it("Deve remover um produto do carrinho", async () => {
-        const product = new Product("Pneu B", 300, "Veiculo");
+    it("Should remove a product from the cart", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire A", 300, category);
 
         await cart.addProduct(product, 1);
         await cart.removeProductById(product.id);
@@ -55,8 +60,9 @@ describe("ShoppingCart", () => {
         expect(items.some(item => item.id === product.id)).toBe(false);
     });
 
-    it("Deve atualizar a quantidade de um produto", async () => {
-        const product = new Product("Pneu C", 400, "Veiculo");
+    it("Should update the quantity of a product", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire C", 400, category);
 
         await cart.addProduct(product, 1);
         await cart.updateQuantity(product.id, 5);
@@ -66,8 +72,9 @@ describe("ShoppingCart", () => {
         expect(item?.quantity).toBe(5);
     });
 
-    it("Deve calcular o total dos produtos", async () => {
-        const product = new Product("Pneu D", 300, "Veiculo");
+    it("Should calculate total of products", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire D", 300, category);
 
         await cart.addProduct(product, 2); // total = 600
         const total = cart.calculateTotalProduct();
@@ -75,8 +82,9 @@ describe("ShoppingCart", () => {
         expect(total).toBe(600);
     });
 
-    it("Deve aplicar desconto de cupom", async () => {
-        const product = new Product("Pneu E", 100, "Veiculo");
+    it("Should apply coupon discount", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire E", 100, category);
 
         await cart.addProduct(product, 1);
 
@@ -86,8 +94,9 @@ describe("ShoppingCart", () => {
 
     });
 
-    it("Deve calcular frete grátis quando total > 500", async () => {
-        const product = new Product("Pneu G", 700, "Veiculo");
+    it("Should calculate free shipping when total > 500", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire G", 700, category);
 
         await cart.addProduct(product, 1);
         const shipping = cart.calculateShipping();
@@ -95,8 +104,9 @@ describe("ShoppingCart", () => {
         expect(shipping).toBe(0);
     });
 
-    it("Deve calcular frete de 29.99 quando total <= 500", async () => {
-        const product = new Product("Pneu H", 10, "Veiculo");
+    it("Should calculate shipping of 29.99 when total <= 500", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire H", 10, category);
 
         await cart.addProduct(product, 2);
         const shipping = cart.calculateShipping();
@@ -104,8 +114,9 @@ describe("ShoppingCart", () => {
         expect(shipping).toBe(29.99);
     });
    
-    it("Deve aplicar desconto por valor acima de 1000", async () => {
-        const product = new Product("Pneu F", 600, "Veiculo");
+    it("Should apply discount for total over 1000", async () => {
+        const category = new Category("Vehicle");
+        const product = new Product("Tire F", 600, category);
 
         await cart.addProduct(product, 2); // total = 1200
         const discount = cart.calculateThresholdDiscount();
