@@ -1,5 +1,5 @@
 import express from 'express';
-import cartRoutes from './routes/cartRoutes';
+import cartRoutes from './routes/index';
 import { cart } from './services/cartService';
 
 async function bootstrap() {

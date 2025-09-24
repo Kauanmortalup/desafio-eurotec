@@ -6,19 +6,9 @@ import { Product } from '../models/product';
 const categoryService = new CategoryService(); 
 
 export class CartController {
-  async getHistory(req: Request, res: Response) {
-    try {
-      const history = await cart.getHistory();
-      return res.status(200).json(history);
-    } catch (error: any) {
-      return res.status(400).json({ erro: error.message });
-    }
-  }
-
-  async clearCartHistory(req: Request, res: Response) {
-    try {
-      await cart.clearCartHistory();
-      return res.status(204).json({ mensagem: "Clean history" });
+  listProducts(req: Request, res: Response) {
+    try{
+      return res.status(200).json(cart.listProducts());
     } catch (error: any) {
       return res.status(400).json({ erro: error.message });
     }
@@ -45,56 +35,7 @@ export class CartController {
     }
   }
 
-  removeProductById(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        const productExists = cart.getProductById(id);
-
-        if (!productExists) {
-          return res.status(404).json({ erro: "Product not found in the cart" });
-        }
-
-        cart.removeProductById(id);
-        return res.status(200).json({ mensagem: "Item removed", cart: cart.listProducts() });
-      } catch (error: any) {
-        return res.status(400).json({ erro: error.message });
-    }
-  }
-
-  listProducts(req: Request, res: Response) {
-    try{
-      return res.status(200).json(cart.listProducts());
-    } catch (error: any) {
-      return res.status(400).json({ erro: error.message });
-    }
-  }
-
-  calculateTotal(req: Request, res: Response) {
-    try {
-      const { coupon } = req.query;
-      let couponDiscount = 0;
-
-      // Check if the coupon exists and is valid
-      if (coupon) {
-        couponDiscount = cart.calculateDiscountCoupon(coupon as string);
-        if (couponDiscount === 0) {
-          return res.status(400).json({ mensagem: "Invalid coupon" });
-        }
-      }
-
-      const productValue = cart.calculateTotalProduct();
-      const shipping = cart.calculateShipping();
-      const thresholdDiscount = cart.calculateThresholdDiscount();
-      const cashback = cart.calculateCashback();
-      const total = Number((productValue + shipping - couponDiscount - thresholdDiscount - cashback).toFixed(2));
-
-      return res.status(200).json({ productValue, shipping, couponDiscount, thresholdDiscount, cashback, total });
-    } catch (error: any) {
-      return res.status(400).json({ erro: error.message });
-    }
-  }
-
-  updateQuantity(req: Request, res: Response) {
+    updateQuantity(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { quantity } = req.body;
@@ -112,6 +53,22 @@ export class CartController {
 
     } catch (error: any) {
       return res.status(400).json({ erro: error.message });
+    }
+  }
+
+  removeProductById(req: Request, res: Response) {
+    try {
+        const { id } = req.params;
+        const productExists = cart.getProductById(id);
+
+        if (!productExists) {
+          return res.status(404).json({ erro: "Product not found in the cart" });
+        }
+
+        cart.removeProductById(id);
+        return res.status(200).json({ mensagem: "Item removed", cart: cart.listProducts() });
+      } catch (error: any) {
+        return res.status(400).json({ erro: error.message });
     }
   }
 }

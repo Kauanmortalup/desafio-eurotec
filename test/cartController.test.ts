@@ -16,21 +16,25 @@ jest.mock("../src/services/cartStorageService", () => ({
 import request from "supertest";
 import express from "express";
 import { CartController } from "../src/controllers/cartController";
+import { CartHistoryController } from "../src/controllers/cartHistoryController"; 
+import { CartOperationsController } from "../src/controllers/cartOperationsController";
 import { cart } from "../src/services/cartService";
 
 const app = express();
 app.use(express.json());
 
-const controller = new CartController();
+const cartController = new CartController();
+const cartHistoryController = new CartHistoryController();
+const cartOperationsController = new CartOperationsController();
 
 // Routes to test
-app.post('/items', controller.addProduct);
-app.delete('/items/:id', controller.removeProductById);
-app.put('/items/:id', controller.updateQuantity);
-app.get('/items', controller.listProducts);
-app.get('/total', controller.calculateTotal);
-app.get('/history', controller.getHistory);
-app.delete('/history', controller.clearCartHistory);
+app.post('/items', cartController.addProduct);
+app.delete('/items/:id', cartController.removeProductById);
+app.put('/items/:id', cartController.updateQuantity);
+app.get('/items', cartController.listProducts);
+app.get('/total', cartOperationsController.calculateTotal);
+app.get('/history', cartHistoryController.getHistory);
+app.delete('/history', cartHistoryController.clearCartHistory);
 
 describe("CartController", () => {
     beforeEach(async () => {
