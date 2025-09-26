@@ -6,10 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
-# Copia tudo, inclusive a pasta data
+# Copy everything, including the data folder.
 COPY . .
 
-# Garante que a pasta /app/data existe no container
+# Ensure that the /app/data folder exists in the container.
 RUN mkdir -p /app/data
 
 RUN npm run build

@@ -7,7 +7,7 @@ async function bootstrap() {
   app.use(express.json());
   app.use('/cart', cartRoutes);
 
-  // Load cart history
+  // Load cart
   await cart.init();
 
   const PORT = 3000;

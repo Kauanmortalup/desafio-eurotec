@@ -35,7 +35,7 @@ export class CartController {
     }
   }
 
-    updateQuantity(req: Request, res: Response) {
+  updateQuantity(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { quantity } = req.body;
